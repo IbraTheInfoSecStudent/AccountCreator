@@ -70,9 +70,11 @@ def displayData():
 # It uses methods from the os and pickle modules
 # Future additions to this function:
 #   1. More input validation to prevent the user from writing to and overwriting a file that is not a save file
+#   2. Detecting .txt files will be done more efficiently with list comprehension (applies to the next 2 functions as well)
 def writeToFile(dictionary):
     print('Current account save files: ')
     # Puts all file names that exist in the current directory into the files list
+    # This is done using list comprehension.
     files = [f for f in os.listdir('.') if os.path.isfile(f)]
     # Prints file names from the files list only if it contains a .txt, as that means it is a save file
     for f in files:
