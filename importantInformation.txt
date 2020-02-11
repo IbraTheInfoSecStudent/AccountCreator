@@ -1,0 +1,24 @@
+This project was created by Ibrahim Girowal. 
+It is a personal project (not school related).
+
+Python skills displayed in this project:
+1. The use and manipulation of lists and dictionaries
+2. While and for loops
+3. If statements
+3. Catching exceptions
+4. Object oriented programming (classes)
+5. Creating and calling functions
+6. Importing and using external modules
+7. Input validation
+8. Python 3's new feature, f-Strings
+9. Using the os module to interact with the operating system
+10. Using the pickle module to interact with files
+10. Working with files
+
+
+Future features to be added:
+1. More input validation to handle specific cases
+2. An extra menu option and function to let the user change information for a specific account
+3. An extra nenu option and function to delete a specific account
+4. More methods in the class 'Account' to do various things (give me ideas!)
+5. More to come!
