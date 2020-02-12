@@ -23,12 +23,13 @@ class Account:
 def createAccount():
     name = input('Enter your full name: ')
     username = input('Enter a username of your choice: ')
-    password = input('Enter a password of your choice: ')    
+    password = input('Enter a password of your choice: ')
+
     # Checks if the username the user chose is already chosen. If it is, it forces the user to choose another username
     if username in accountDictionary.keys():
         print('That username is taken. Chose another')
-        createAccount()    
-    # If the username is unique, the information is added to a dictionary. The key is the username, and the value
+        createAccount()
+        # If the username is unique, the information is added to a dictionary. The key is the username, and the value
     # that corresponds to that key is an object of the class Account
     else:
         accountDictionary[username] = Account(name, username, password)
@@ -36,25 +37,25 @@ def createAccount():
 
 
 # This functions displays existing accounts
-def displayAccounts():    
+def displayAccounts():
     # If there is ever a case where the dictionary is empty, that means there are no existing accounts
     if len(accountDictionary) == 0:
-        print('There are no existing accounts')       
-    # Displays usernames of all accounts
+        print('There are no existing accounts')
+        # Displays usernames of all accounts
     else:
         print('Existing accounts:')
         for keys in accountDictionary.keys():
             print('\t' + keys)
 
 
-# This function displays all data for a chosen account            
+# This function displays all data for a chosen account
 def displayData():
-    print('\nFor which account do you want to see the data?')    
+    print('\nFor which account do you want to see the data?')
     # Displays each username so the user can pick which account they want to view information for
     for keys in accountDictionary.keys():
         print('\t' + keys)
     user = input('\nEnter account name: ')
-    if user in accountDictionary.keys():       
+    if user in accountDictionary.keys():
         # Loops through the entire dictionary, but only prints data once it finds the username the user chose
         for key, value in accountDictionary.items():
             if user == key:
@@ -70,19 +71,13 @@ def displayData():
 # It uses methods from the os and pickle modules
 # Future additions to this function:
 #   1. More input validation to prevent the user from writing to and overwriting a file that is not a save file
-#   2. Detecting .txt files will be done more efficiently with list comprehension (applies to the next 2 functions as well)
 def writeToFile(dictionary):
     print('Current account save files: ')
-    # Puts all file names that exist in the current directory into the files list
-    # This is done using list comprehension.
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
-    # Prints file names from the files list only if it contains a .txt, as that means it is a save file
+    # Prints all files in the current directory that contain a .txt extension
+    files = [f for f in os.listdir('.') if '.txt' in f]
     for f in files:
-        if '.txt' in f:
-            print('\t' + f)
-        else:
-            continue
-            
+        print(f)
+
     filechoice = input('\nWhich file should the accounts be saved to?\nIt can be one of the above files, or a new one.'
                        '\nCAUTION: Existing files will be overwritten.\tChoose file: ')
     # It does not matter if the user includes the .txt in what they input
@@ -90,6 +85,7 @@ def writeToFile(dictionary):
         filename = filechoice
     else:
         filename = (filechoice + '.txt')
+
     with open(filename, 'wb') as f:
         # Uses pickle's dump() function to put all accounts from the dictionary into the save file
         # If save file does not exist, it creates a new file automatically
@@ -101,17 +97,16 @@ def writeToFile(dictionary):
 def retrieveFromFile():
     print('List of account save files:')
     # Uses same code as above to print off save files
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    files = [f for f in os.listdir('.') if '.txt' in f]
     for f in files:
-        if '.txt' in f:
-            print('\t' + f)
-        else:
-            continue
+        print(f)
+
     filechoice = input('\nWhich file do you want to retrieve accounts from? ')
     if '.txt' in filechoice:
         filename = filechoice
     else:
         filename = (filechoice + '.txt')
+
     # Try and except block in order to catch the FileNotFoundError
     try:
         with open(filename, 'rb') as f:
@@ -128,12 +123,9 @@ def retrieveFromFile():
 #   1. Since there may be .txt files present that are not save files, the program should prevent the user from deleting those
 def deleteSaveFile():
     print('List of account save files:')
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    files = [f for f in os.listdir('.') if '.txt' in f]
     for f in files:
-        if '.txt' in f:
-            print('\t' + f)
-        else:
-            continue
+        print(f)
     filechoice = input('\nWhich save file do you want to delete? ')
     # Checks to see if the file is a .txt file (since only .txt files are present in the files list)
     if filechoice in files:
@@ -142,14 +134,14 @@ def deleteSaveFile():
     else:
         print('That file does not exist')
 
-# Required variables to run the program
-active = True
+
+# Dictionary where accounts are saved
 accountDictionary = {}
 
 # The start of the main program
 print('Welcome to the Account Creation Portal!')
 # A while loop to control the entire program flow and menu
-while active:
+while True:
     print('\nWhat would you like to do?')
     print('\t1. Create a new account')
     print('\t2. View a list of existing accounts')
@@ -158,7 +150,7 @@ while active:
     print('\t5. Retrieve accounts from a specific file')
     print('\t6. Delete an account save file')
     print('\t7. Quit')
-    
+
     # Based on user input, call the appropriate function
     choice = input()
     if choice == '1':
