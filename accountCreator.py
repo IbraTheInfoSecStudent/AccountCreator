@@ -60,7 +60,7 @@ def displayData():
         for key, value in accountDictionary.items():
             if user == key:
                 # Calls the method defined in the class Account
-                print(value.getUserInfo())
+                value.getUserInfo()
             elif user != key:
                 continue
     else:
