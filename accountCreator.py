@@ -3,8 +3,7 @@
 # Accounts from files can be retrieved. Save files can be deleted. Account details can be viewed.
 
 # Required modules
-import pickle
-import os
+import pickle, os, glob
 
 
 # Creating a class Account. Each account the user creates is an object of this class
@@ -17,6 +16,16 @@ class Account:
 
     def getUserInfo(self):
         print(f"Full Name: {self.fullname.title()}\nUsername: {self.username}\nPassword: {self.password}")
+
+
+class UserInfo:
+    def __init__(self, favProg, carOwned, favFood):
+        self.favProg = favProg
+        self.carOwned = carOwned
+        self.favFood = favFood
+
+    def getUserInfo(self):
+        print(f"Favourite Language: {self.favProg.title()}\nCar Owned: {self.carOwned}\nFavourite Food: {self.favFood}")
 
 
 # This function creates accounts. Requires user to input their name, desired username, and desired password
@@ -134,9 +143,48 @@ def deleteSaveFile():
     else:
         print('That file does not exist')
 
+# This function allows the user to view save files and their sizes, and gives a total size.
+# File retrieval is done using glob() instead of the regular list comprehension done in previous functions
+def saveFileTotalSize():
+    print('List of account save file sizes:\n')
+    totalSize = 0
+    for f in glob.glob('*.txt'):
+        print(f + ' | ' + str(os.path.getsize(f)) + ' bytes')
+        totalSize += os.path.getsize(f)
+    print('-------')
+    print('Total size: ' + str(totalSize) + ' bytes')
+
+
+def addUserInfo():
+    print('\nFor which account do you want to add data?')
+    # Displays each username so the user can pick which account they want to view information for
+    for keys in accountDictionary.keys():
+        print('\t' + keys)
+    user = input('\nEnter account name: ')
+    if user in accountDictionary.keys():
+        # Loops through the entire dictionary, but only prints data once it finds the username the user chose
+        favProg = input('Favourite programming language: ')
+        car = input('Car owned: ')
+        favFood = input('Favourite food: ')
+        userInfoDictionary[user] = UserInfo(favProg, car, favFood)
+        print('Data successfully added!')
+    else:
+        print('That user does not exist')
+
+
+def viewUserData():
+    print('\nFor which account do you want to add data?')
+    # Displays each username so the user can pick which account they want to view information for
+    for keys in accountDictionary.keys():
+        print('\t' + keys)
+    user = input('\nEnter account name: ')
+    if user in userInfoDictionary:
+        for value in userInfoDictionary.values():
+            value.getUserInfo()
 
 # Dictionary where accounts are saved
 accountDictionary = {}
+userInfoDictionary = {}
 
 # The start of the main program
 print('Welcome to the Account Creation Portal!')
@@ -145,11 +193,17 @@ while True:
     print('\nWhat would you like to do?')
     print('\t1. Create a new account')
     print('\t2. View a list of existing accounts')
-    print('\t3. View all information for a specific account')
+    print('\t3. View account information for a specific account')
     print('\t4. Save accounts to a file')
     print('\t5. Retrieve accounts from a specific file')
     print('\t6. Delete an account save file')
-    print('\t7. Quit')
+    print('\t7. View save file sizes')
+    print('\t8. Quit')
+    print('*** Data Actions ***')
+    print('\t9. Add user data')
+    print('\t10. View user data')
+    print('\t11. View statistics report')
+    print('\t12. Export statistics as a text file')
 
     # Based on user input, call the appropriate function
     choice = input()
@@ -175,7 +229,13 @@ while True:
     elif choice == '6':
         deleteSaveFile()
     elif choice == '7':
+        saveFileTotalSize()
+    elif choice == '8':
         print('Goodbye!')
         break
+    elif choice == '9':
+        addUserInfo()
+    elif choice == '10':
+        viewUserData()
     else:
         print('That option does not exist. Try again')
